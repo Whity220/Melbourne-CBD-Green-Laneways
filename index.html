@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/MelbourneCBDPedestrianIntegration800m_1.js"></script>
+        <script src="data/SelectedCBDLaneways_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 0.3,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_MelbourneCBDPedestrianIntegration800m_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Depthmap_Ref'] !== null ? autolinker.link(feature.properties['Depthmap_Ref'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Angular_Connectivity'] !== null ? autolinker.link(feature.properties['Angular_Connectivity'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Axial_Line_Ref'] !== null ? autolinker.link(feature.properties['Axial_Line_Ref'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Connectivity'] !== null ? autolinker.link(feature.properties['Connectivity'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Data_Map_Ref'] !== null ? autolinker.link(feature.properties['Data_Map_Ref'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Segment_Length'] !== null ? autolinker.link(feature.properties['Segment_Length'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice'] !== null ? autolinker.link(feature.properties['T1024_Choice'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_R1500_metric'] !== null ? autolinker.link(feature.properties['T1024_Choice_R1500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_R2500_metric'] !== null ? autolinker.link(feature.properties['T1024_Choice_R2500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_R400_metric'] !== null ? autolinker.link(feature.properties['T1024_Choice_R400_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_R5000_metric'] !== null ? autolinker.link(feature.properties['T1024_Choice_R5000_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_R800_metric'] !== null ? autolinker.link(feature.properties['T1024_Choice_R800_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_Segment_Length_Wgt'] !== null ? autolinker.link(feature.properties['T1024_Choice_Segment_Length_Wgt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_Segment_Length_W_1'] !== null ? autolinker.link(feature.properties['T1024_Choice_Segment_Length_W_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_Segment_Length_W_2'] !== null ? autolinker.link(feature.properties['T1024_Choice_Segment_Length_W_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_Segment_Length_W_3'] !== null ? autolinker.link(feature.properties['T1024_Choice_Segment_Length_W_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_Segment_Length_W_4'] !== null ? autolinker.link(feature.properties['T1024_Choice_Segment_Length_W_4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Choice_Segment_Length_W_5'] !== null ? autolinker.link(feature.properties['T1024_Choice_Segment_Length_W_5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration'] !== null ? autolinker.link(feature.properties['T1024_Integration'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_R1500_metric'] !== null ? autolinker.link(feature.properties['T1024_Integration_R1500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_R2500_metric'] !== null ? autolinker.link(feature.properties['T1024_Integration_R2500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_R400_metric'] !== null ? autolinker.link(feature.properties['T1024_Integration_R400_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_R5000_metric'] !== null ? autolinker.link(feature.properties['T1024_Integration_R5000_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_R800_metric'] !== null ? autolinker.link(feature.properties['T1024_Integration_R800_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_Segment_Lengt'] !== null ? autolinker.link(feature.properties['T1024_Integration_Segment_Lengt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_Segment_Len_1'] !== null ? autolinker.link(feature.properties['T1024_Integration_Segment_Len_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_Segment_Len_2'] !== null ? autolinker.link(feature.properties['T1024_Integration_Segment_Len_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_Segment_Len_3'] !== null ? autolinker.link(feature.properties['T1024_Integration_Segment_Len_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_Segment_Len_4'] !== null ? autolinker.link(feature.properties['T1024_Integration_Segment_Len_4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Integration_Segment_Len_5'] !== null ? autolinker.link(feature.properties['T1024_Integration_Segment_Len_5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Node_Count'] !== null ? autolinker.link(feature.properties['T1024_Node_Count'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Node_Count_R1500_metric'] !== null ? autolinker.link(feature.properties['T1024_Node_Count_R1500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Node_Count_R2500_metric'] !== null ? autolinker.link(feature.properties['T1024_Node_Count_R2500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Node_Count_R400_metric'] !== null ? autolinker.link(feature.properties['T1024_Node_Count_R400_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Node_Count_R5000_metric'] !== null ? autolinker.link(feature.properties['T1024_Node_Count_R5000_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Node_Count_R800_metric'] !== null ? autolinker.link(feature.properties['T1024_Node_Count_R800_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_R1500_metric'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_R1500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_R2500_metric'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_R2500_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_R400_metric'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_R400_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_R5000_metric'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_R5000_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_R800_metric'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_R800_metric'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_Segment_Lengt'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_Segment_Lengt'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_Segment_Len_1'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_Segment_Len_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_Segment_Len_2'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_Segment_Len_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_Segment_Len_3'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_Segment_Len_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_Segment_Len_4'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_Segment_Len_4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Depth_Segment_Len_5'] !== null ? autolinker.link(feature.properties['T1024_Total_Depth_Segment_Len_5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Segment_Length'] !== null ? autolinker.link(feature.properties['T1024_Total_Segment_Length'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Segment_Length_R150'] !== null ? autolinker.link(feature.properties['T1024_Total_Segment_Length_R150'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Segment_Length_R250'] !== null ? autolinker.link(feature.properties['T1024_Total_Segment_Length_R250'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Segment_Length_R400'] !== null ? autolinker.link(feature.properties['T1024_Total_Segment_Length_R400'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Segment_Length_R500'] !== null ? autolinker.link(feature.properties['T1024_Total_Segment_Length_R500'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['T1024_Total_Segment_Length_R800'] !== null ? autolinker.link(feature.properties['T1024_Total_Segment_Length_R800'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MelbourneCBDPedestrianIntegration800m_1_0(feature) {
+            if (feature.properties['T1024_Integration_R800_metric'] >= -1.000000 && feature.properties['T1024_Integration_R800_metric'] <= 3369.429400 ) {
+                return {
+                pane: 'pane_MelbourneCBDPedestrianIntegration800m_1',
+                opacity: 1,
+                color: 'rgba(0,0,4,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+            }
+            if (feature.properties['T1024_Integration_R800_metric'] >= 3369.429400 && feature.properties['T1024_Integration_R800_metric'] <= 4008.042700 ) {
+                return {
+                pane: 'pane_MelbourneCBDPedestrianIntegration800m_1',
+                opacity: 1,
+                color: 'rgba(80,18,123,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+            }
+            if (feature.properties['T1024_Integration_R800_metric'] >= 4008.042700 && feature.properties['T1024_Integration_R800_metric'] <= 4356.345200 ) {
+                return {
+                pane: 'pane_MelbourneCBDPedestrianIntegration800m_1',
+                opacity: 1,
+                color: 'rgba(182,55,122,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+            }
+            if (feature.properties['T1024_Integration_R800_metric'] >= 4356.345200 && feature.properties['T1024_Integration_R800_metric'] <= 4750.088780 ) {
+                return {
+                pane: 'pane_MelbourneCBDPedestrianIntegration800m_1',
+                opacity: 1,
+                color: 'rgba(251,135,97,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+            }
+            if (feature.properties['T1024_Integration_R800_metric'] >= 4750.088780 && feature.properties['T1024_Integration_R800_metric'] <= 5893.724100 ) {
+                return {
+                pane: 'pane_MelbourneCBDPedestrianIntegration800m_1',
+                opacity: 1,
+                color: 'rgba(252,253,191,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_MelbourneCBDPedestrianIntegration800m_1');
+        map.getPane('pane_MelbourneCBDPedestrianIntegration800m_1').style.zIndex = 401;
+        map.getPane('pane_MelbourneCBDPedestrianIntegration800m_1').style['mix-blend-mode'] = 'normal';
+        var layer_MelbourneCBDPedestrianIntegration800m_1 = new L.geoJson(json_MelbourneCBDPedestrianIntegration800m_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MelbourneCBDPedestrianIntegration800m_1',
+            layerName: 'layer_MelbourneCBDPedestrianIntegration800m_1',
+            pane: 'pane_MelbourneCBDPedestrianIntegration800m_1',
+            onEachFeature: pop_MelbourneCBDPedestrianIntegration800m_1,
+            style: style_MelbourneCBDPedestrianIntegration800m_1_0,
+        });
+        bounds_group.addLayer(layer_MelbourneCBDPedestrianIntegration800m_1);
+        map.addLayer(layer_MelbourneCBDPedestrianIntegration800m_1);
+        function pop_SelectedCBDLaneways_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['binsperct'] !== null ? autolinker.link(feature.properties['binsperct'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['climate_ty'] !== null ? autolinker.link(feature.properties['climate_ty'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['closepart'] !== null ? autolinker.link(feature.properties['closepart'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['driveways'] !== null ? autolinker.link(feature.properties['driveways'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['farm_rank'] !== null ? autolinker.link(feature.properties['farm_rank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['farmlane'] !== null ? autolinker.link(feature.properties['farmlane'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fores_rank'] !== null ? autolinker.link(feature.properties['fores_rank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['forest'] !== null ? autolinker.link(feature.properties['forest'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['insol_scor'] !== null ? autolinker.link(feature.properties['insol_scor'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mapbase__1'] !== null ? autolinker.link(feature.properties['mapbase__1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mapbase_mc'] !== null ? autolinker.link(feature.properties['mapbase_mc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['narrowing'] !== null ? autolinker.link(feature.properties['narrowing'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['park_rank'] !== null ? autolinker.link(feature.properties['park_rank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['parklane'] !== null ? autolinker.link(feature.properties['parklane'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['segid'] !== null ? autolinker.link(feature.properties['segid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['segid_1'] !== null ? autolinker.link(feature.properties['segid_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['vert_rank'] !== null ? autolinker.link(feature.properties['vert_rank'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['verticalsu'] !== null ? autolinker.link(feature.properties['verticalsu'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['walls'] !== null ? autolinker.link(feature.properties['walls'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['wsud'] !== null ? autolinker.link(feature.properties['wsud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_SelectedCBDLaneways_2_0() {
+            return {
+                pane: 'pane_SelectedCBDLaneways_2',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,144,19,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_SelectedCBDLaneways_2');
+        map.getPane('pane_SelectedCBDLaneways_2').style.zIndex = 402;
+        map.getPane('pane_SelectedCBDLaneways_2').style['mix-blend-mode'] = 'normal';
+        var layer_SelectedCBDLaneways_2 = new L.geoJson(json_SelectedCBDLaneways_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_SelectedCBDLaneways_2',
+            layerName: 'layer_SelectedCBDLaneways_2',
+            pane: 'pane_SelectedCBDLaneways_2',
+            onEachFeature: pop_SelectedCBDLaneways_2,
+            style: style_SelectedCBDLaneways_2_0,
+        });
+        bounds_group.addLayer(layer_SelectedCBDLaneways_2);
+        map.addLayer(layer_SelectedCBDLaneways_2);
+        setBounds();
+        var i = 0;
+        layer_SelectedCBDLaneways_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['mapbase__1'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['mapbase__1']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_SelectedCBDLaneways_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_SelectedCBDLaneways_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_SelectedCBDLaneways_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_SelectedCBDLaneways_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_SelectedCBDLaneways_2]);
+        });
+        </script>
+    </body>
+</html>
